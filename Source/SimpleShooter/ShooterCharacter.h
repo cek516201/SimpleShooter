@@ -74,7 +74,8 @@ private:
     void Reload();
 	UPROPERTY(EditAnywhere)
 	USoundBase* ReloadSound;
-	
+	UPROPERTY(EditAnywhere)
+	USoundBase* NoAmmoSound;
 	
 
 	UPROPERTY(EditAnywhere)

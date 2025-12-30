@@ -149,7 +149,6 @@ void AShooterCharacter::SwitchWeapons(float Slot)
 
 void AShooterCharacter::Reload()
 {
-    UGameplayStatics::PlaySoundAtLocation(this, ReloadSound, GetActorLocation());
     if (!Gun[ActiveIndex]) return;
     if (!Ammos.IsValidIndex(ActiveIndex)) return;
 
@@ -160,12 +159,16 @@ void AShooterCharacter::Reload()
     if (Need <= 0) return;
 
     const int32& Reserve = Ammos[ActiveIndex];
-    if (Reserve <= 0) return;
+	if (Reserve <= 0)
+	{
+		UGameplayStatics::PlaySoundAtLocation(this, NoAmmoSound, GetActorLocation());
+		return;
+	}
 
     const int32 Take = FMath::Min(Need, Reserve);
     Gun[ActiveIndex]->AddAmmo(Take);
     Ammos[ActiveIndex] -= Take;
-
+	UGameplayStatics::PlaySoundAtLocation(this, ReloadSound, GetActorLocation());
 }
 
 int32 AShooterCharacter::GetCurrentAmmo() const
