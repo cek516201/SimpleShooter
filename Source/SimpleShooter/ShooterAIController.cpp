@@ -8,14 +8,36 @@
 
 void AShooterAIController::BeginPlay()
 {
-    Super::BeginPlay();
+	Super::BeginPlay();
 
-    if (AIBehavior != nullptr)
+    //if (AIBehavior != nullptr)
+    //{
+    //    RunBehaviorTree(AIBehavior);
+    //    APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+    //    GetBlackboardComponent()->SetValueAsVector(TEXT("PlayerLocation"), PlayerPawn->GetActorLocation());
+    //    GetBlackboardComponent()->SetValueAsVector(TEXT("StartLocation"), GetPawn()->GetActorLocation());
+    //}
+}
+
+void AShooterAIController::OnPossess(APawn* InPawn)
+{
+    Super::OnPossess(InPawn);
+
+    if (!AIBehavior) return;
+
+    RunBehaviorTree(AIBehavior);
+
+    UBlackboardComponent* BB = GetBlackboardComponent();
+    if (!BB) return;
+
+    // 시작 위치
+    BB->SetValueAsVector(TEXT("StartLocation"), InPawn->GetActorLocation());
+
+    // 플레이어 위치
+    APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+    if (PlayerPawn)
     {
-        RunBehaviorTree(AIBehavior);
-        APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-        GetBlackboardComponent()->SetValueAsVector(TEXT("PlayerLocation"), PlayerPawn->GetActorLocation());
-        GetBlackboardComponent()->SetValueAsVector(TEXT("StartLocation"), GetPawn()->GetActorLocation());
+        BB->SetValueAsVector(TEXT("PlayerLocation"), PlayerPawn->GetActorLocation());
     }
 }
 

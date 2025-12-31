@@ -17,10 +17,10 @@ class SIMPLESHOOTER_API AShooterAIController : public AAIController
 public:
      virtual void Tick(float DeltaSeconds) override;
      bool IsDead() const;
-     
-protected:
-     virtual void BeginPlay() override;
 
+protected:
+	virtual void BeginPlay() override;
+    virtual void OnPossess(APawn* InPawn) override;
 
 private:
     UPROPERTY(EditAnywhere)
