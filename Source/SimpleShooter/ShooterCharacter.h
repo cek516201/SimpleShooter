@@ -24,6 +24,11 @@ protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float MaxHealth;
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly)
+	float Health;
+
 public:
     UFUNCTION(BlueprintPure)
 	bool IsDead() const;
@@ -40,7 +45,18 @@ public:
 	UFUNCTION(BlueprintPure)
 	int32 GetReloadAmmo() const;
 
+	UFUNCTION(BlueprintPure)
+	int32 GetActiveIndex() const;
+
+	UFUNCTION(BlueprintPure)
+	const TArray<int32>& GetAmmos() const;
+
+	UFUNCTION(BlueprintCallable)
+	void SetHealth(float NewHealth);
 	
+	UFUNCTION(BlueprintCallable)
+	void SetAmmoAtIndex(int32 Index, int32 NewAmmo);
+
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
@@ -61,10 +77,8 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	float RotationRate = 10;
-	UPROPERTY(EditDefaultsOnly)
-	float MaxHealth = 100;
-	UPROPERTY(VisibleAnywhere)
-	float Health;
+
+
 
 	
 
@@ -85,6 +99,6 @@ private:
 	UPROPERTY()
 	AGun* Gun[3];
 	UPROPERTY(EditAnywhere)
-	TArray<int32> Ammos = {100,3,3};
+	TArray<int32> Ammos = {100,30,3};
 
 };

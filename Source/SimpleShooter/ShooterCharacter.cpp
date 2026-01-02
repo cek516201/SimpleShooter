@@ -24,9 +24,9 @@ AShooterCharacter::AShooterCharacter()
 void AShooterCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	Health = MaxHealth;
+	//Health = MaxHealth;
 	GetMesh()->HideBoneByName(TEXT("weapon_r"), EPhysBodyOp::PBO_None);
-	ActiveIndex = 0;
+	//ActiveIndex = 0;
 	UE_LOG(LogTemp, Warning, TEXT("ActiveIndex = %d"), ActiveIndex);
 	for (int32 Index = 0; Index < 3; Index++)
 	{
@@ -190,4 +190,23 @@ int32 AShooterCharacter::GetReloadAmmo() const
 	return Gun[ActiveIndex]->GetReloadAmmo();
 }
 
+int32 AShooterCharacter::GetActiveIndex() const
+{
+	return ActiveIndex;
+}
 
+const TArray<int32>& AShooterCharacter::GetAmmos() const
+{
+	return Ammos;
+}
+
+void AShooterCharacter::SetHealth(float NewHealth)
+{
+	Health = FMath::Clamp(NewHealth, 0.f, MaxHealth);
+}
+
+void AShooterCharacter::SetAmmoAtIndex(int32 Index, int32 NewAmmo)
+{
+	if (!Ammos.IsValidIndex(Index)) return;
+	Ammos[Index] = NewAmmo;
+}
