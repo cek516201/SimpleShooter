@@ -8,6 +8,8 @@
 
 class AGun;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyDeath, AShooterCharacter*, DeadEnemy);
+
 UCLASS()
 class SIMPLESHOOTER_API AShooterCharacter : public ACharacter
 {
@@ -30,6 +32,10 @@ protected:
 	float Health;
 
 public:
+	// OnDeath 이벤트 디스패처
+	UPROPERTY(BlueprintAssignable)
+	FOnEnemyDeath OnDeath;
+
     UFUNCTION(BlueprintPure)
 	bool IsDead() const;
 	

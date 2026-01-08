@@ -105,7 +105,7 @@ float AShooterCharacter::TakeDamage(float DamageAmount, struct FDamageEvent cons
 		DetachFromControllerPendingDestroy();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 		 
-		
+		OnDeath.Broadcast(this);
 	}
 
 	return DamageToApply;
