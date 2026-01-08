@@ -34,11 +34,11 @@ void AShooterAIController::OnPossess(APawn* InPawn)
     BB->SetValueAsVector(TEXT("StartLocation"), InPawn->GetActorLocation());
 
     // 플레이어 위치
-    APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-    if (PlayerPawn)
-    {
-        BB->SetValueAsVector(TEXT("PlayerLocation"), PlayerPawn->GetActorLocation());
-    }
+    //APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+    //if (PlayerPawn)
+    //{
+    //    BB->SetValueAsVector(TEXT("PlayerLocation"), PlayerPawn->GetActorLocation());
+    //}
 }
 
 void AShooterAIController::Tick(float DeltaSeconds)
