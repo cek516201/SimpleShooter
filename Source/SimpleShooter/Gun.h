@@ -67,8 +67,7 @@ private:
 
 	bool GunTrace(FHitResult& Hit, FVector& ShotDirection);
 
+	bool ShouldDamageTarget(AActor* HitActor) const;
+
 	AController* GetOwnerController() const;
-
-	
-
 };

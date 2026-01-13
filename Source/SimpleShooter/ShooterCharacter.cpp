@@ -13,11 +13,6 @@ AShooterCharacter::AShooterCharacter()
 {
  	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
-
-	
-
-	
-
 }
 
 // Called when the game starts or when spawned
@@ -49,6 +44,18 @@ void AShooterCharacter::BeginPlay()
 		}
 	}
 	
+}
+
+bool AShooterCharacter::IsSameTeam(const AActor* OtherActor) const
+{
+	if (!OtherActor)
+		return false;
+
+	const AShooterCharacter* OtherCharacter = Cast<AShooterCharacter>(OtherActor);
+	if (!OtherCharacter)
+		return false;
+
+	return Team == OtherCharacter->Team;
 }
 
 bool AShooterCharacter::IsDead() const

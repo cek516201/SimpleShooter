@@ -6,6 +6,7 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "DrawDebugHelpers.h"
 #include "Math/UnrealMathUtility.h"
+#include "ShooterCharacter.h"
 
 // Sets default values
 AGun::AGun()
@@ -43,9 +44,13 @@ void AGun::PullTrigger()
 		AActor* HitActor = Hit.GetActor();
 		if (HitActor != nullptr)
 		{
-			FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
-			AController *OwnerController = GetOwnerController();
-			HitActor->TakeDamage(Damage, DamageEvent, OwnerController, this);
+			// ★ 팀킬 체크 추가
+			if (ShouldDamageTarget(HitActor))
+			{
+				FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
+				AController* OwnerController = GetOwnerController();
+				HitActor->TakeDamage(Damage, DamageEvent, OwnerController, this);
+			}
 		}
 	}
 
@@ -85,6 +90,23 @@ bool AGun::GunTrace(FHitResult& Hit, FVector& ShotDirection)
 	return GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
 }
 
+bool AGun::ShouldDamageTarget(AActor* HitActor) const
+{
+	if (!HitActor || !GetOwner())
+		return false;
+
+	// ShooterCharacter로 캐스팅
+	AShooterCharacter* Shooter = Cast<AShooterCharacter>(GetOwner());
+	AShooterCharacter* Target = Cast<AShooterCharacter>(HitActor);
+
+	// 둘 다 ShooterCharacter가 아니면 데미지 (벽, 오브젝트 등)
+	if (!Shooter || !Target)
+		return true;
+
+	// ★ 팀이 다르면 데미지
+	return Shooter->GetTeam() != Target->GetTeam();
+}
+
 AController* AGun::GetOwnerController() const
 {
 	APawn *OwnerPawn = Cast<APawn>(GetOwner());
@@ -112,6 +134,3 @@ int AGun::GetReloadAmmo() const
 {
 	return ReloadAmmo;
 }
-
-
-

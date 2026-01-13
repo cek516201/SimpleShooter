@@ -10,6 +10,14 @@ class AGun;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FOnEnemyDeath, AShooterCharacter*, DeadEnemy);
 
+UENUM(BlueprintType)
+enum class ETeam : uint8
+{
+	Player  UMETA(DisplayName = "Player Team"),
+	Enemy   UMETA(DisplayName = "Enemy Team"),
+	Neutral UMETA(DisplayName = "Neutral")
+};
+
 UCLASS()
 class SIMPLESHOOTER_API AShooterCharacter : public ACharacter
 {
@@ -35,6 +43,17 @@ public:
 	// OnDeath 이벤트 디스패처
 	UPROPERTY(BlueprintAssignable)
 	FOnEnemyDeath OnDeath;
+
+	// ★ 팀 ID
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	ETeam Team;
+
+	// 팀 확인 함수
+	UFUNCTION(BlueprintCallable)
+	ETeam GetTeam() const { return Team; }
+
+	UFUNCTION(BlueprintCallable)
+	bool IsSameTeam(const AActor* OtherActor) const;
 
     UFUNCTION(BlueprintPure)
 	bool IsDead() const;
